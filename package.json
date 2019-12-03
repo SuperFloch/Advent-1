@@ -1,0 +1,22 @@
+{
+  "name": "advent",
+  "version": "1.0.0",
+  "description": "adventCalendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bibimission/Advent.git"
+  },
+  "keywords": [
+    "swag"
+  ],
+  "author": "bibi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bibimission/Advent/issues"
+  },
+  "homepage": "https://github.com/bibimission/Advent#readme"
+}
