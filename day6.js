@@ -3,10 +3,11 @@ var fs = require('fs');
 var planets = [];
 var totalOrbit = 0;
 fillPlanets();
-planets.forEach(function(p){
-	totalOrbit+=countOrbits(p);
-});
-console.log(totalOrbit);
+
+var start = planets[arrayIncludesKey(planets,"name","YOU").index];
+var end = planets[arrayIncludesKey(planets,"name","SAN").index];
+console.log(recurChiotte(start,0));
+
 
 function fillPlanets(){
 	
@@ -38,8 +39,8 @@ function fillPlanets(){
 			plaPlanet = planets[plaExists.index];
 		}
 		papaPlanet.enfants.push(plaPlanet);
+		plaPlanet.enfants.push(papaPlanet);
 	});
-	//console.log(planets.length);
 }
 
 function countOrbits(planet){
@@ -51,9 +52,30 @@ function countOrbits(planet){
 	return ret;
 }
 
+
+function recurChiotte(planet,distance){
+	var i=0;
+	var found=false;
+	if(!planet.visited){
+		planet.visited=true;
+		while( i< planet.enfants.length && !found){
+			console.log(planet.enfants[i]);
+			if(planet.enfants[i] == end){
+				console.log(distance+ " OK !");
+				found=true;
+			}else{
+				found = recurChiotte(planet.enfants[i],distance+1);
+			}
+			i++;
+		}
+	}
+	return found;
+}
+
 function Planet(name){
 	this.name=name;
 	this.enfants = [];
+	this.visited=false;
 }
 
 function arrayIncludesKey(array,keyName, value){
