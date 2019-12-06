@@ -1,62 +1,72 @@
 var fs = require('fs');
 
-
-var min = 146810;
-var max = 612564;
-
-var j = min;
-var foundSum = 0;
+calculate();
 
 
-while(j<max){
-	if(check(j)){
-		foundSum++;
-		console.log(j);
-	}
-	j++;
-}
-console.log(foundSum);
-
-function check(value){
-	return checkGrow(value) && checkDoublon(value);
-}
-
-function checkGrow(value){
-	var ret=true;
-	var i = 0;
-	while(i < value.toString().length-1 && ret){
-		if(parseInt(value.toString().charAt(i))>parseInt(value.toString().charAt(i+1))){
-			ret=false;
-		}
-		i++;
-	}
-	return ret;
-}
-
-function checkDoublon(value){
-	var chiffres = value.toString().split("");
-	var hasADouble=false;
+function calculate(){
 	
-	var x=0;
-	while(x<chiffres.length && !hasADouble){
-		var leChiffre = chiffres[x];
-		var y=0;
-		var occurencies = 0;
-		while(y<chiffres.length && !hasADouble){
-			if(leChiffre == chiffres[y]){
-				occurencies++;
-			}else{
-				if(occurencies == 2){
-					hasADouble = true;
-				}
-				occurencies=0;
-			}
-			y++;
+	var fileName = 'input.txt';
+	var file = fs.readFileSync(fileName);
+	var input = file.toString().split(',');
+	input = integerize(input);
+	
+	
+	function getVal(value,mode){
+		if(mode==0){
+			return input[value];
+		}else{
+			return value;
 		}
-		if(occurencies == 2){
-			hasADouble = true;
-		}
-		x++;
 	}
-	return hasADouble;
+	
+	var i=0;
+	var stop=false;
+	while(i < input.length && !stop){
+		var jump = 4;
+		
+		var operator = input[i]%10;
+		var val1Mode = (input[i]-operator)%100;
+		var val2Mode = (input[i]-operator-val1Mode)%1000;
+		var result = 0;
+		console.log("operator: "+operator);
+		switch(operator){
+			case 1:
+				//Add
+				result = getVal(input[i+1],val1Mode)+getVal(input[i+2],val2Mode);
+				input[input[i+3]]=result;
+				console.log("result: "+result);
+				break;
+			case 2:
+				//Multiply
+				result = getVal(input[i+1],val1Mode)*getVal(input[i+2],val2Mode);
+				input[input[i+3]]=result;
+				console.log("result: "+result);
+				break;
+			case 3:
+				jump = 2;
+				break;
+			case 4:
+				jump = 2;
+				break;
+			case 99:
+				//End
+				stop=true;
+				break;
+			default :
+				console.log("erreur");
+		}
+		
+		i+=jump;
+	}
+
+	console.log(input[0]);
+	return input[0];
+}
+
+function integerize(array){
+	var ret = [];
+	array.forEach(function(chiffre){
+		ret.push(parseInt(chiffre,10));
+	});
+	return ret;
 }
