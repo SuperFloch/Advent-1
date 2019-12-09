@@ -18,6 +18,28 @@ function calculate(){
 	var path2Points=cutPath(path2);
 	
 	var commonPoints= getCommonPoints(path1Points,path2Points);
+	
+	var counter=0;
+	path1Points.forEach(function(point){
+		counter ++;
+		commonPoints.forEach(function(cp){
+			if(point.x == cp.x && point.y == cp.y){
+				cp.score+=counter;
+			}
+		});
+	});
+	counter=0;
+	path2Points.forEach(function(point){
+		counter ++;
+		commonPoints.forEach(function(cp){
+			if(point.x == cp.x && point.y == cp.y){
+				cp.score+=counter;
+			}
+		});
+	});
+	console.log(commonPoints);
+	
+	/*
 	console.log(commonPoints);
 	var dists = [];
 	commonPoints.forEach(function(cp){
@@ -25,6 +47,7 @@ function calculate(){
 		dists.push(dist);
 	});
 	console.log(dists.sort());
+	*/
 	
 }
 
@@ -86,4 +109,5 @@ function cutPath(path){
 function Point(x,y){
 	this.x=x;
 	this.y=y;
+	this.score=0;
 }
