@@ -4,6 +4,7 @@ var grille =[];
 var asteroids = [];
 calculate();
 
+// Station en X=17 , Y = 14
 
 function calculate(){
 	
@@ -26,11 +27,37 @@ function calculate(){
 		}
 	}
 	
-	var count = [];
-	asteroids.forEach(function(as){
-		count.push({asteroid : as, count : countLineOfSight(as)});
-	});
-	console.log(count.sort(function(a,b){return b.count-a.count;}));
+	var station = asteroids.find(el => el.x == 17 && el.y == 14);
+	
+	var angles = countLineOfSight(station);
+	angles.sort(function(a,b){return a.as.x-b.as.x});
+	angles.sort(function(a,b){return a.as.y-b.as.y});
+	angles.sort(function(a,b){return b.angle-a.angle});
+
+	var startingAngle=90;
+	
+	var j = angles.findIndex(el => el.angle == startingAngle);
+	var previousAngle = 360;
+	var i=0;
+	while(i<200){
+		var boom = false;
+		while(!boom){
+			var as = angles[j];
+			if(as.angle!=previousAngle && !as.exploded){
+				as.exploded = true;
+				boom=true;
+				previousAngle=as.angle;
+				console.log(i+" Et boum ! Angle "+as.angle+" explosé !"+ (as.as.x+17) +":"+(as.as.y+14));
+			}
+			j++;
+			if(j==angles.length){
+				j=0;
+			}
+		}
+		i++;
+	}
+	console.log(j);
+	console.log(angles[j-1]);
 	
 }
 
@@ -38,12 +65,14 @@ function calculate(){
 function countLineOfSight(asteroid){
 	var angles = [];
 	asteroids.forEach(function(as){
-		var angle = Math.atan2(as.y-asteroid.y, as.x-asteroid.x) * 180 / Math.PI;
-		if(!angles.includes(angle)){
-			angles.push(angle)
+		if(as!=asteroid){
+			var angle = Math.atan2(as.y-asteroid.y, as.x-asteroid.x) * 180 / Math.PI;
+			as.y = as.y-asteroid.y;
+			as.x = as.x - asteroid.x;
+			angles.push({ as : as, angle : angle, exploded:false});
 		}
 	});
-	return angles.length;
+	return angles;
 }
 
 function Asteroid(x,y,angle){
