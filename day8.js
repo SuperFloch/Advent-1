@@ -37,7 +37,7 @@ function calculate(width,height){
 	}
 	
 	// Analyse
-	console.log(layersOfImg);
+	//console.log(layersOfImg);
 	var finalImg=[];
 	for(var y=0; y < height ; y++){
 		var line="";
