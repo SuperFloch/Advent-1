@@ -3,16 +3,27 @@ var fs = require('fs');
 var moons=[];
 calculate();
 
-
+var states = [];
+var found=false;
 
 console.log(moons);
-
-for(var i=0; i< 1000 ; i++){
+var index=0;
+while(!found){
+	found=false;
+	states.forEach(function(state){
+		if(equals(state,moons)){
+			found=true;
+			console.log(state);
+			console.log(moons);
+		}
+	});
+	states.push(copy(moons));
 	oneTime();
-	//console.log(moons);
+	index++;
+	console.log(index);
 }
 
-console.log(getEnergy());
+console.log(index);
 
 function getEnergy(){
 	var total=0;
@@ -91,4 +102,29 @@ function Moon(x,y,z){
 	this.velX=0;
 	this.velY=0;
 	this.velZ=0;
+}
+
+function copy(arrayOfMoons){
+	var ret = [];
+	arrayOfMoons.forEach(function(moon){
+		var newMoon=new Moon(moon.x,moon.y,moon.z);
+		newMoon.velX=moon.velX;
+		newMoon.velY=moon.velY;
+		newMoon.velZ=moon.velZ;
+		ret.push(newMoon);
+	});
+	return ret;
+}
+
+function equals(array1,array2){
+	var equal=true;
+	for(var i=0 ; i< array1.length ; i++){
+		if(array1[i].x == array2[i].x && array1[i].y == array2[i].y && array1[i].z == array2[i].z && array1[i].velX == array2[i].velX && array1[i].velY == array2[i].velY && array1[i].velZ == array2[i].velZ){
+			//cool
+		}else{
+			equal=false;
+			break;
+		}
+	}
+	return equal;
 }
