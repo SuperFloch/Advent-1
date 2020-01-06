@@ -3,6 +3,8 @@ var fs = require('fs');
 var moons=[];
 calculate();
 
+var baseState=copy(moons);
+
 var states = [];
 var found=false;
 
@@ -10,6 +12,7 @@ console.log(moons);
 var index=0;
 while(!found){
 	found=false;
+	/*
 	states.forEach(function(state){
 		if(equals(state,moons)){
 			found=true;
@@ -17,8 +20,14 @@ while(!found){
 			console.log(moons);
 		}
 	});
-	states.push(copy(moons));
+	*/
 	oneTime();
+	if(equals(moons,baseState)){
+		found=true;
+		console.log(moons);
+	}
+	//states.push(copy(moons));
+	
 	index++;
 	console.log(index);
 }
